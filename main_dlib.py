@@ -287,7 +287,7 @@ root = Tk()
 root.title("Snap chat filters")
 this_dir = os.path.dirname(os.path.realpath(__file__))
 # Adds a custom logo
-imgicon = PhotoImage(file=os.path.join(this_dir, "imgs", "icon.gif"))
+imgicon = PhotoImage(file=os.path.join(this_dir, "imgs", "icon.png"))
 root.tk.call("wm", "iconphoto", root._w, imgicon)
 
 ##Create 5 buttons and assign their corresponding function to active sprites
