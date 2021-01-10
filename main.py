@@ -125,6 +125,7 @@ def cvloop(run_event):
 
     while run_event.is_set(): #while the thread is active we loop
         ret, image = video_capture.read()
+        image = cv2.flip(image,1)
 
         faces = apply_Haar_filter(image, haar_faces, 1.3 , 5, 30)
         for (x,y,w,h) in faces: #if there are faces

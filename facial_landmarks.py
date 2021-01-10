@@ -50,6 +50,7 @@ def get_face_boundbox(points, face_part):
 while cv2.getWindowProperty('Video', 0) >= 0:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
+    frame = cv2.flip(frame,1)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # detect faces in the grayscale frame
     rects = detector(gray, 0)
@@ -67,7 +68,7 @@ while cv2.getWindowProperty('Video', 0) >= 0:
 
         incl = calculate_inclination(shape[17], shape[26])
 
-        img = cv2.imread("./sprites/doggy_ears.png")
+        img = cv2.imread("./sprites/doggy_nose.png")
         rows,cols = img.shape[0], img.shape[1]
         M = cv2.getRotationMatrix2D((cols/2,rows/2),incl,1)
         dst = cv2.warpAffine(img,M,(cols,rows))

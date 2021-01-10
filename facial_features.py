@@ -32,9 +32,11 @@ video_capture = cv2.VideoCapture(0)
 cv2.imshow('Video', np.empty((5,5),dtype=float))
 
 
+
 while cv2.getWindowProperty('Video', 0) >= 0:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
+    frame = cv2.flip(frame,1)
 
     #frame = cv2.imread('faceswap/lol2.jpg')
 
