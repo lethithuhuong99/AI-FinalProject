@@ -10,6 +10,7 @@ from os import listdir
 from os.path import isfile, join
 from sys import platform as _platform
 from threading import Thread
+from datetime import datetime
 
 import cv2
 from PIL import Image, ImageTk
@@ -136,7 +137,17 @@ def get_face_boundbox(points, face_part):
 
 
 def save(image):
-    cv2.imwrite(filename='saved_iqm.jpg', img=image)
+    try:
+        # datetime object containing current date and time
+        now = datetime.now()
+        # dd/mm/YY H:M:S
+        dt_string = now.strftime("%d%m%y%H%M%S")
+
+        name = "image"+ dt_string + ".jpg"
+        print(name)
+        cv2.imwrite(filename=name, img=image)
+    except:
+        cv2.destroyAllWindows()
 
 # Principal Loop where openCV (magic) ocurs
 def cvloop(run_event, read_camera=0, virtual_camera=0):
@@ -321,9 +332,9 @@ SPRITES = [
     0,
     0,
     0,
-
+    0,
 ]  # hat, mustache, flies, glasses, doggy -> 1 is visible, 0 is not visible
-BTNS = [btn1, btn2, btn3, btn4, btn5]
+BTNS = [btn1, btn2, btn3, btn4, btn5, btn6]
 
 
 # Creates a thread where the magic ocurs
