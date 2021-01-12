@@ -154,11 +154,11 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
     global panelA
     global SPRITES
 
-    dir_ = "./sprites/flyes/"
-    flies = [
-        f for f in listdir(dir_) if isfile(join(dir_, f))
-    ]  # image of flies to make the "animation"
-    i = 0
+    # dir_ = "./sprites/flyes/"
+    # flies = [
+    #     f for f in listdir(dir_) if isfile(join(dir_, f))
+    # ]  # image of flies to make the "animation"
+    # i = 0
     video_capture = cv2.VideoCapture(read_camera)  # read from webcam
     (x, y, w, h) = (0, 0, 10, 10)  # whatever initial values
 
@@ -206,29 +206,32 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
 
             # hat condition
             if SPRITES[0]:
-                apply_sprite(image, "./sprites/hat2.png", w, x, y, incl)
+                apply_sprite(image, "./sprites/rabbit.png", w + 220, x - 105 , y + 260, incl)
 
             # mustache condition
             if SPRITES[1]:
-                (x1, y1, w1, h1) = get_face_boundbox(shape, 6)
-                apply_sprite(image, "./sprites/clownnose.png", w1, x1, y1, incl)
+                apply_sprite(image, "./sprites/fire.png", w+150, x-100, y, incl)
+                if is_mouth_open:
+                    apply_sprite(
+                        image, "./sprites/fire-1.png", w0, x0, y0, incl, ontop=False
+                    )
 
             # glasses condition
             if SPRITES[3]:
                 (x3, y3, _, h3) = get_face_boundbox(shape, 1)
                 apply_sprite(
-                    image, "./sprites/glasses.png", w, x, y3, incl, ontop=False
+                    image, "./sprites/glasses.png", w+50, x-20, y3-130, incl, ontop=False
                 )
 
-            # flies condition
-            if SPRITES[2]:
-                # to make the "animation" we read each time a different image of that folder
-                # the images are placed in the correct order to give the animation impresion
-                apply_sprite(image, dir_ + flies[i], w, x, y, incl)
-                i += 1
-                i = (
-                    0 if i >= len(flies) else i
-                )  # when done with all images of that folder, begin again
+            # # flies condition
+            # if SPRITES[2]:
+            #     # to make the "animation" we read each time a different image of that folder
+            #     # the images are placed in the correct order to give the animation impresion
+            #     apply_sprite(image, dir_ + flies[i], w, x, y, incl)
+            #     i += 1
+            #     i = (
+            #         0 if i >= len(flies) else i
+            #     )  # when done with all images of that folder, begin again
 
             # doggy condition
             (x0, y0, w0, h0) = get_face_boundbox(shape, 6)  # bound box of mouth
@@ -237,29 +240,26 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
                 apply_sprite(
                     image, "./sprites/doggy_nose.png", w3, x3, y3, incl, ontop=False
                 )
-
                 apply_sprite(image, "./sprites/doggy_ears.png", w, x, y, incl)
-
                 if is_mouth_open:
                     apply_sprite(
-                        image,
-                        "./sprites/doggy_tongue.png",
-                        w0,
-                        x0,
-                        y0,
-                        incl,
-                        ontop=False,
+                        image, "./sprites/doggy_tongue.png", w0, x0, y0, incl, ontop=False
                     )
-            # else:
-            #     if is_mouth_open:
-            #         apply_sprite(
-            #             image, "./sprites/rainbow.png", w0, x0, y0, incl, ontop=False
-            #         )
             if SPRITES[5]:
-                apply_sprite(image, "./sprites/santahat.png", w, x, y, incl)
+                apply_sprite(image, "./sprites/butterfly.png", w+220, x-100, y+300, incl)
 
             if SPRITES[6]:
-                apply_sprite(image, "./sprites/clownhair2.png", w, x, y, incl)
+                (x3, y3, w3, h3) = get_face_boundbox(shape, 6)  # nose
+                apply_sprite(
+                    image, "./sprites/clownnose.png", w3, x3, y3, incl, ontop=True
+                )
+                apply_sprite(image, "./sprites/clownhair.png", w+100, x-50, y+50, incl)
+
+            if SPRITES[7]:
+                apply_sprite(image, "./sprites/butterflies.png", w + 120, x-70, y + 50, incl)
+
+            if SPRITES[8]:
+                apply_sprite(image, "./sprites/tellme.png", w + 130, x - 105, y + 50, incl)
 
         # OpenCV represents image as BGR; PIL but RGB, we need to change the chanel order
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -268,7 +268,7 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
             if virtual_camera:
                 stream_camera.schedule_frame(image)
 
-        # conerts to PIL format
+        # converts to PIL format
         image = Image.fromarray(image)
         # Converts to a TK format to visualize it in the GUI
         image = ImageTk.PhotoImage(image)
@@ -307,43 +307,53 @@ imgicon = PhotoImage(file=os.path.join(this_dir, "imgs", "icon.png"))
 root.tk.call("wm", "iconphoto", root._w, imgicon)
 
 ##Create 5 buttons and assign their corresponding function to active sprites
-icon1 = PhotoImage(file=os.path.join(this_dir, "sprites", "hat2.png"))
-icon1 = icon1.subsample(5,5)
-btn1 = Button(top_frame,  image = icon1, compound = "left", command=lambda: put_sprite(0))
-btn1.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+rabbit = PhotoImage(file=os.path.join(this_dir, "sprites","icon" ,"rabbitIcon.png"))
+rabbit = rabbit.subsample(5,5)
+btn_rabbit = Button(top_frame,  image = rabbit, compound = "left" , command=lambda: put_sprite(0))
+btn_rabbit.pack(side="left", fill="none", expand="false", padx="15", pady="15")
 
-icon2 = PhotoImage(file=os.path.join(this_dir, "sprites", "clownnose.png"))
-icon2 = icon2.subsample(10,10)
-btn2 = Button(top_frame, image = icon2, compound = "left", command=lambda: put_sprite(1))
-btn2.pack(side="left", fill="none", expand="false", padx="5", pady="5")
+fire = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" ,"fire.png"))
+fire = fire.subsample(5,5)
+btn_fire = Button(top_frame, image = fire, compound = "left", command=lambda: put_sprite(1))
+btn_fire.pack(side="left", fill="none", expand="false", padx="5", pady="5")
 
 btn3 = Button(top_frame, text="Flies", command=lambda: put_sprite(2))
 btn3.pack(side="left", fill="none", expand="false", padx="5", pady="5")
 
-btn4 = Button(top_frame, text="Glasses", command=lambda: put_sprite(3))
-btn4.pack(side="left", fill="none", expand="false", padx="5", pady="5")
+glasses = PhotoImage(file=os.path.join(this_dir, "sprites", "icon", "glasses.png"))
+glasses = glasses.subsample(5,5)
+btn_glasses = Button(top_frame, image = glasses, compound = "left", command=lambda: put_sprite(3))
+btn_glasses.pack(side="left", fill="none", expand="false", padx="5", pady="5")
 
-btn5 = Button(top_frame, text="Dog", command=lambda: put_sprite(4))
-btn5.pack(side="left", fill="none", expand="false", padx="5", pady="5")
+dog = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "dog.png"))
+dog = dog.subsample(5,5)
+btn_dog = Button(top_frame, image = dog, compound = "left", command=lambda: put_sprite(4))
+btn_dog.pack(side="left", fill="none", expand="false", padx="5", pady="5")
 
-iconSave = PhotoImage(file=os.path.join(this_dir, "sprites", "save.png"))
-iconSave = iconSave.subsample(7,7)
+iconSave = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "save.png"))
+iconSave = iconSave.subsample(10,10)
 btn_save = Button(bottom_frame, image = iconSave, compound = "left",)
 btn_save.pack(side="left",fill="none", expand="no", padx="5", pady="5")
 
-iconSantaHat = PhotoImage(file=os.path.join(this_dir, "sprites", "santahat.png"))
-iconSantaHat = iconSantaHat.subsample(5,5)
-btn_santa_hat = Button(top_frame,  image = iconSantaHat, compound = "left", command=lambda: put_sprite(5))
-btn_santa_hat.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+iconButterfly = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" ,"butterfly.png"))
+iconButterfly = iconButterfly.subsample(43,43)
+btn_butterfly = Button(top_frame,  image = iconButterfly, compound = "left", command=lambda: put_sprite(5))
+btn_butterfly.pack(side="left", fill="none", expand="false", padx="15", pady="15")
 
-clownhair = PhotoImage(file=os.path.join(this_dir, "sprites", "clownhair.png"))
-clownhair = clownhair.subsample(5,5)
-btn_clownhair = Button(top_frame,  image = clownhair, compound = "left", command=lambda: put_sprite(6))
-btn_clownhair.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+clown = PhotoImage(file=os.path.join(this_dir, "sprites", "icon", "clown.png"))
+clown = clown.subsample(5,5)
+btn_clown = Button(top_frame,  image = clown, compound = "left", command=lambda: put_sprite(6))
+btn_clown.pack(side="left", fill="none", expand="false", padx="15", pady="15")
 
+iconButterflies = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "butterflys.png"))
+iconButterflies = iconButterflies.subsample(5,5)
+btn_butterflies = Button(top_frame,  image = iconButterflies, compound = "left", command=lambda: put_sprite(7))
+btn_butterflies.pack(side="left", fill="none", expand="false", padx="15", pady="15")
 
-
-
+iconTellMe = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "tellme.png"))
+iconTellMe = iconTellMe.subsample(5,5)
+btn_tellme = Button(top_frame,  image = iconTellMe, compound = "left", command=lambda: put_sprite(8))
+btn_tellme.pack(side="left", fill="none", expand="false", padx="15", pady="15")
 
 # Create the panel where webcam image will be shown
 panelA = Label(root,width=700, height=700)
@@ -359,8 +369,10 @@ SPRITES = [
     0,
     0,
     0,
+    0,
+    0,
 ]  # hat, mustache, flies, glasses, doggy -> 1 is visible, 0 is not visible
-BTNS = [btn1, btn2, btn3, btn4, btn5, btn_santa_hat, btn_clownhair]
+BTNS = [btn_rabbit, btn_fire, btn3, btn_glasses, btn_dog, btn_butterfly, btn_clown, btn_butterflies, btn_tellme]
 
 
 # Creates a thread where the magic ocurs
