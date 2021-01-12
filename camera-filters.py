@@ -19,9 +19,9 @@ import dlib
 from imutils import face_utils, rotate_bound
 
 if sys.version_info.major >= 3:
-    from tkinter import SUNKEN, RAISED, Tk, PhotoImage, Button, Label
+    from tkinter import SUNKEN, RAISED, Tk, PhotoImage, Button, Label, Frame
 else:
-    from tkinter import SUNKEN, RAISED, Tk, PhotoImage, Button, Label
+    from tkinter import SUNKEN, RAISED, Tk, PhotoImage, Button, Label, Frame
 
 
 _streaming = False
@@ -211,7 +211,7 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
             # mustache condition
             if SPRITES[1]:
                 (x1, y1, w1, h1) = get_face_boundbox(shape, 6)
-                apply_sprite(image, "./sprites/mustache.png", w1, x1, y1, incl)
+                apply_sprite(image, "./sprites/clownnose.png", w1, x1, y1, incl)
 
             # glasses condition
             if SPRITES[3]:
@@ -235,7 +235,7 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
             if SPRITES[4]:
                 (x3, y3, w3, h3) = get_face_boundbox(shape, 5)  # nose
                 apply_sprite(
-                    image, "./sprites/clownnose.png", w3, x3, y3, incl, ontop=False
+                    image, "./sprites/doggy_nose.png", w3, x3, y3, incl, ontop=False
                 )
 
                 apply_sprite(image, "./sprites/doggy_ears.png", w, x, y, incl)
@@ -250,11 +250,16 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
                         incl,
                         ontop=False,
                     )
-            else:
-                if is_mouth_open:
-                    apply_sprite(
-                        image, "./sprites/rainbow.png", w0, x0, y0, incl, ontop=False
-                    )
+            # else:
+            #     if is_mouth_open:
+            #         apply_sprite(
+            #             image, "./sprites/rainbow.png", w0, x0, y0, incl, ontop=False
+            #         )
+            if SPRITES[5]:
+                apply_sprite(image, "./sprites/santahat.png", w, x, y, incl)
+
+            if SPRITES[6]:
+                apply_sprite(image, "./sprites/clownhair2.png", w, x, y, incl)
 
         # OpenCV represents image as BGR; PIL but RGB, we need to change the chanel order
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -270,14 +275,8 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
         # Actualize the image in the panel to show it
         panelA.configure(image=image)
         panelA.image = image
-        key = cv2.waitKey(1)
-        if key == ord('s'):
-            cv2.imwrite(filename='saved_iqm.jpg', img=image)
-        elif key == ord('q'):
-            video_capture.release()
-            cv2.destroyAllWindows()
-            break
-        btn6.configure(command=lambda: save(image))
+
+        btn_save.configure(command=lambda: save(image))
 
     video_capture.release()
 
@@ -297,33 +296,59 @@ args = parser.parse_args()
 root = Tk()
 root.title("Snap chat filters")
 this_dir = os.path.dirname(os.path.realpath(__file__))
+top_frame = Frame(root, width=1200, height=1000)
+top_frame.pack(side='bottom', fill='both', padx=10, pady=5, expand=True)
+
+bottom_frame = Frame(root, width=1200, height=1000)
+bottom_frame.pack(side='bottom', padx=10, pady=5, expand=True)
+
 # Adds a custom logo
 imgicon = PhotoImage(file=os.path.join(this_dir, "imgs", "icon.png"))
 root.tk.call("wm", "iconphoto", root._w, imgicon)
 
 ##Create 5 buttons and assign their corresponding function to active sprites
-btn1 = Button(root, text="Hat", command=lambda: put_sprite(0))
-btn1.pack(side="top", fill="both", expand="no", padx="5", pady="5")
+icon1 = PhotoImage(file=os.path.join(this_dir, "sprites", "hat2.png"))
+icon1 = icon1.subsample(5,5)
+btn1 = Button(top_frame,  image = icon1, compound = "left", command=lambda: put_sprite(0))
+btn1.pack(side="left", fill="none", expand="false", padx="15", pady="15")
 
-btn2 = Button(root, text="Mustache", command=lambda: put_sprite(1))
-btn2.pack(side="top", fill="both", expand="no", padx="5", pady="5")
+icon2 = PhotoImage(file=os.path.join(this_dir, "sprites", "clownnose.png"))
+icon2 = icon2.subsample(10,10)
+btn2 = Button(top_frame, image = icon2, compound = "left", command=lambda: put_sprite(1))
+btn2.pack(side="left", fill="none", expand="false", padx="5", pady="5")
 
-btn3 = Button(root, text="Flies", command=lambda: put_sprite(2))
-btn3.pack(side="top", fill="both", expand="no", padx="5", pady="5")
+btn3 = Button(top_frame, text="Flies", command=lambda: put_sprite(2))
+btn3.pack(side="left", fill="none", expand="false", padx="5", pady="5")
 
-btn4 = Button(root, text="Glasses", command=lambda: put_sprite(3))
-btn4.pack(side="top", fill="both", expand="no", padx="5", pady="5")
+btn4 = Button(top_frame, text="Glasses", command=lambda: put_sprite(3))
+btn4.pack(side="left", fill="none", expand="false", padx="5", pady="5")
 
-btn5 = Button(root, text="Doggy", command=lambda: put_sprite(4))
-btn5.pack(side="top", fill="both", expand="no", padx="5", pady="5")
+btn5 = Button(top_frame, text="Dog", command=lambda: put_sprite(4))
+btn5.pack(side="left", fill="none", expand="false", padx="5", pady="5")
 
-btn6 = Button(root, text="Save")
-btn6.pack(side="top", fill="both", expand="no", padx="5", pady="5")
+iconSave = PhotoImage(file=os.path.join(this_dir, "sprites", "save.png"))
+iconSave = iconSave.subsample(7,7)
+btn_save = Button(bottom_frame, image = iconSave, compound = "left",)
+btn_save.pack(side="left",fill="none", expand="no", padx="5", pady="5")
+
+iconSantaHat = PhotoImage(file=os.path.join(this_dir, "sprites", "santahat.png"))
+iconSantaHat = iconSantaHat.subsample(5,5)
+btn_santa_hat = Button(top_frame,  image = iconSantaHat, compound = "left", command=lambda: put_sprite(5))
+btn_santa_hat.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+
+clownhair = PhotoImage(file=os.path.join(this_dir, "sprites", "clownhair.png"))
+clownhair = clownhair.subsample(5,5)
+btn_clownhair = Button(top_frame,  image = clownhair, compound = "left", command=lambda: put_sprite(6))
+btn_clownhair.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+
+
+
 
 
 # Create the panel where webcam image will be shown
-panelA = Label(root)
-panelA.pack(padx=10, pady=10)
+panelA = Label(root,width=700, height=700)
+panelA.pack(side="top" , padx=5, pady=5)
+
 
 # Variable to control which sprite you want to visualize
 SPRITES = [
@@ -333,8 +358,9 @@ SPRITES = [
     0,
     0,
     0,
+    0,
 ]  # hat, mustache, flies, glasses, doggy -> 1 is visible, 0 is not visible
-BTNS = [btn1, btn2, btn3, btn4, btn5, btn6]
+BTNS = [btn1, btn2, btn3, btn4, btn5, btn_santa_hat, btn_clownhair]
 
 
 # Creates a thread where the magic ocurs
