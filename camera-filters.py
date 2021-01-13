@@ -216,6 +216,9 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
                         image, "./sprites/fire-1.png", w0, x0, y0, incl, ontop=False
                     )
 
+            if SPRITES[2]:
+                apply_sprite(image, "./sprites/glassesHeart.png", w+180, x-90, y+250, incl)
+
             # glasses condition
             if SPRITES[3]:
                 (x3, y3, _, h3) = get_face_boundbox(shape, 1)
@@ -260,6 +263,20 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
 
             if SPRITES[8]:
                 apply_sprite(image, "./sprites/tellme.png", w + 130, x - 105, y + 50, incl)
+
+            if SPRITES[9]:
+                (x3, y3, w3, h3) = get_face_boundbox(shape, 6)  # nose
+                apply_sprite(
+                    image, "./sprites/catwang.png", w3 + 100, x3-50, y3-75, incl, ontop=False
+                )
+
+            if SPRITES[10]:
+                apply_sprite(image, "./sprites/leafbear.png", w+500, x-220, y+320, incl)
+
+            if SPRITES[11]:
+                apply_sprite(image, "./sprites/snack.png", w + 120, x-70, y + 110, incl)
+
+
 
         # OpenCV represents image as BGR; PIL but RGB, we need to change the chanel order
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -310,50 +327,67 @@ root.tk.call("wm", "iconphoto", root._w, imgicon)
 rabbit = PhotoImage(file=os.path.join(this_dir, "sprites","icon" ,"rabbitIcon.png"))
 rabbit = rabbit.subsample(5,5)
 btn_rabbit = Button(top_frame,  image = rabbit, compound = "left" , command=lambda: put_sprite(0))
-btn_rabbit.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+btn_rabbit.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
 fire = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" ,"fire.png"))
 fire = fire.subsample(5,5)
 btn_fire = Button(top_frame, image = fire, compound = "left", command=lambda: put_sprite(1))
-btn_fire.pack(side="left", fill="none", expand="false", padx="5", pady="5")
+btn_fire.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
-btn3 = Button(top_frame, text="Flies", command=lambda: put_sprite(2))
-btn3.pack(side="left", fill="none", expand="false", padx="5", pady="5")
+glassesHeart = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" ,"glassesHeart.png"))
+glassesHeart = glassesHeart.subsample(5,5)
+btn_glasses_heart = Button(top_frame, image = glassesHeart, compound = "left", command=lambda: put_sprite(2))
+btn_glasses_heart.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
 glasses = PhotoImage(file=os.path.join(this_dir, "sprites", "icon", "glasses.png"))
 glasses = glasses.subsample(5,5)
 btn_glasses = Button(top_frame, image = glasses, compound = "left", command=lambda: put_sprite(3))
-btn_glasses.pack(side="left", fill="none", expand="false", padx="5", pady="5")
+btn_glasses.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
 dog = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "dog.png"))
 dog = dog.subsample(5,5)
 btn_dog = Button(top_frame, image = dog, compound = "left", command=lambda: put_sprite(4))
-btn_dog.pack(side="left", fill="none", expand="false", padx="5", pady="5")
+btn_dog.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
 iconSave = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "save.png"))
 iconSave = iconSave.subsample(10,10)
-btn_save = Button(bottom_frame, image = iconSave, compound = "left",)
-btn_save.pack(side="left",fill="none", expand="no", padx="5", pady="5")
+btn_save = Button(bottom_frame, image = iconSave)
+btn_save.pack(side="left",fill="none", expand="no", padx="14", pady="10")
 
 iconButterfly = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" ,"butterfly.png"))
 iconButterfly = iconButterfly.subsample(43,43)
 btn_butterfly = Button(top_frame,  image = iconButterfly, compound = "left", command=lambda: put_sprite(5))
-btn_butterfly.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+btn_butterfly.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
 clown = PhotoImage(file=os.path.join(this_dir, "sprites", "icon", "clown.png"))
 clown = clown.subsample(5,5)
 btn_clown = Button(top_frame,  image = clown, compound = "left", command=lambda: put_sprite(6))
-btn_clown.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+btn_clown.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
 iconButterflies = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "butterflys.png"))
 iconButterflies = iconButterflies.subsample(5,5)
 btn_butterflies = Button(top_frame,  image = iconButterflies, compound = "left", command=lambda: put_sprite(7))
-btn_butterflies.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+btn_butterflies.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
 iconTellMe = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "tellme.png"))
 iconTellMe = iconTellMe.subsample(5,5)
 btn_tellme = Button(top_frame,  image = iconTellMe, compound = "left", command=lambda: put_sprite(8))
-btn_tellme.pack(side="left", fill="none", expand="false", padx="15", pady="15")
+btn_tellme.pack(side="left", fill="none", expand="false", padx="14", pady="10")
+
+catwang = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "catwang.png"))
+catwang = catwang.subsample(5,5)
+btn_catwang = Button(top_frame,  image = catwang, compound = "left", command=lambda: put_sprite(9))
+btn_catwang.pack(side="left", fill="none", expand="false", padx="14", pady="10")
+
+leafbear = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "bearleaf.png"))
+leafbear = leafbear.subsample(5,5)
+btn_leafbear = Button(top_frame,  image = leafbear, compound = "left", command=lambda: put_sprite(10))
+btn_leafbear.pack(side="left", fill="none", expand="false", padx="14", pady="10")
+
+snack = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" , "snack.png"))
+snack = snack.subsample(5,5)
+btn_snack = Button(top_frame,  image = snack, compound = "left", command=lambda: put_sprite(11))
+btn_snack.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
 # Create the panel where webcam image will be shown
 panelA = Label(root,width=700, height=700)
@@ -371,8 +405,12 @@ SPRITES = [
     0,
     0,
     0,
+    0,
+    0,
+    0,
 ]  # hat, mustache, flies, glasses, doggy -> 1 is visible, 0 is not visible
-BTNS = [btn_rabbit, btn_fire, btn3, btn_glasses, btn_dog, btn_butterfly, btn_clown, btn_butterflies, btn_tellme]
+BTNS = [btn_rabbit, btn_fire, btn_glasses_heart, btn_glasses, btn_dog, btn_butterfly, btn_clown, btn_butterflies,
+        btn_tellme, btn_catwang, btn_leafbear, btn_snack]
 
 
 # Creates a thread where the magic ocurs
