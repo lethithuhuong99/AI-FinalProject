@@ -249,7 +249,7 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
                         image, "./sprites/doggy_tongue.png", w0, x0, y0, incl, ontop=False
                     )
             if SPRITES[5]:
-                apply_sprite(image, "./sprites/butterflyss.png", w+190, x-100, y+350, incl)
+                apply_sprite(image, "./sprites/butterflyss.png", w+190, x-100, y+220, incl)
 
             if SPRITES[6]:
                 (x3, y3, w3, h3) = get_face_boundbox(shape, 6)  # nose
