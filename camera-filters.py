@@ -249,7 +249,7 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
                         image, "./sprites/doggy_tongue.png", w0, x0, y0, incl, ontop=False
                     )
             if SPRITES[5]:
-                apply_sprite(image, "./sprites/butterfly.png", w+220, x-100, y+300, incl)
+                apply_sprite(image, "./sprites/butterflyss.png", w+190, x-100, y+350, incl)
 
             if SPRITES[6]:
                 (x3, y3, w3, h3) = get_face_boundbox(shape, 6)  # nose
@@ -275,8 +275,6 @@ def cvloop(run_event, read_camera=0, virtual_camera=0):
 
             if SPRITES[11]:
                 apply_sprite(image, "./sprites/snack.png", w + 120, x-70, y + 110, incl)
-
-
 
         # OpenCV represents image as BGR; PIL but RGB, we need to change the chanel order
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -313,6 +311,7 @@ args = parser.parse_args()
 root = Tk()
 root.title("Snap chat filters")
 this_dir = os.path.dirname(os.path.realpath(__file__))
+
 top_frame = Frame(root, width=1200, height=1000)
 top_frame.pack(side='bottom', fill='both', padx=10, pady=5, expand=True)
 
@@ -354,8 +353,8 @@ iconSave = iconSave.subsample(10,10)
 btn_save = Button(bottom_frame, image = iconSave)
 btn_save.pack(side="left",fill="none", expand="no", padx="14", pady="10")
 
-iconButterfly = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" ,"butterfly.png"))
-iconButterfly = iconButterfly.subsample(43,43)
+iconButterfly = PhotoImage(file=os.path.join(this_dir, "sprites", "icon" ,"butterflyss.png"))
+iconButterfly = iconButterfly.subsample(5,5)
 btn_butterfly = Button(top_frame,  image = iconButterfly, compound = "left", command=lambda: put_sprite(5))
 btn_butterfly.pack(side="left", fill="none", expand="false", padx="14", pady="10")
 
